@@ -1,65 +1,30 @@
-import numpy as np
+import pandas as pd
+import base64
 
-def decomposicao_lu(A):
-    n = A.shape[0]
+def download_txt(filename, label=""):
+  with open(filename, "r") as f:
+    encoded_file = f.read().encode()
+  b64 = base64.b64encode(encoded_file).decode()
+  href = f'<a href="data:file/csv;base64,{b64}" download="{filename}" target="_blank">{label}</a>'
+  return href
 
-    L = np.eye(n, dtype=np.double)
-    
-    for i in range(n):
-        factor = A[i+1:, i]/A[i, i]
-        L[i+1:, i] = factor
-        A[i+1:] = A[i+1:] - factor[:, np.newaxis] * A[i]
-    
-    return L, A
+def convert_matrix_to_latex(np_array, label):
+  m, n = np_array.shape
+  latex_string = ""
+  latex_string += str(label)
+  latex_string += " = \n"
+  latex_string += "\\begin{bmatrix}"
+  for i in range(m):
+    row_string = ""
+    for j in range(n):
+      row_string += str(np_array[i][j])
+      if j != n-1:
+        row_string += " & "
+      else:
+        row_string += " \\\\ "
+    latex_string += row_string
+  latex_string += "\\end{bmatrix}"
+  return latex_string
 
-def resolve_lu(L, U, b):
-    n = b.shape[0]
-    y = np.zeros((n,1))
-    x = np.zeros((n,1))
-    
-    y[0][0] = b[0][0]/L[0, 0]
-    
-    for i in range(2, n+1):
-        y[i-1][0] = (b[i-1][0] - sum(L[i-1, j-1]*y[j-1][0] for j in range(1, i)))/L[i-1, i-1]
-
-    
-    x[n-1][0] = y[n-1][0]/U[n-1, n-1]
-    
-    for i in reversed(range(1, n)):
-        x[i-1][0] = (y[i-1][0] - sum(U[i-1, j-1]*x[j-1][0] for j in range(i+1, n+1)))/U[i-1, i-1] 
-
-    return x
-
-def decomposicao_cholesky(A):
-    n = A.shape[0]
-
-    L = np.zeros((n, n))
-
-    for i in range(n):
-        for k in range(i+1):
-            tmp_sum = sum(L[i][j] * L[k][j] for j in range(k))
-            
-            if (i == k):
-                L[i][i] = np.sqrt(A[i][i] - tmp_sum)
-            else:
-                L[i][k] = (1.0 / L[k][k] * (A[i][k] - tmp_sum))
-    return L
-
-def resolve_cholesky(L, b):
-    n = b.shape[0]
-    y = np.zeros((n,1))
-    x = np.zeros((n,1))
-    
-    y[0][0] = b[0][0]/L[0, 0]
-    
-    for i in range(2, n+1):
-        y[i-1][0] = (b[i-1][0] - sum(L[i-1, j-1]*y[j-1][0] for j in range(1, i)))/L[i-1, i-1]
-
-    
-    x[n-1][0] = y[n-1][0]/L.T[n-1, n-1]
-    
-    for i in reversed(range(1, n)):
-        x[i-1][0] = (y[i-1][0] - sum(L.T[i-1, j-1]*x[j-1][0] for j in range(i+1, n+1)))/L.T[i-1, i-1] 
-    
-    return x
-
+def read_matrix(file_input):
+  return pd.read_table(file_input, header=None, sep=" ").to_numpy()
