@@ -45,7 +45,7 @@ def jacob_eigen(A, tol=10**-10):
     n = A.shape[0]
     
     X = np.eye(*A.shape)
-    
+    count = 0
     while True:
         p, q = indices_maximo_valor(A)
         phi = calcula_phi(A, p, q)
@@ -55,6 +55,6 @@ def jacob_eigen(A, tol=10**-10):
         A = np.matmul(A, P)
         
         X = np.matmul(X, P)
-        
+        count += 1
         if checar_tol(A, tol):
-            return np.diagonal(A), X
+            return np.diagonal(A), X, count
