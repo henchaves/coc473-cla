@@ -29,12 +29,12 @@ def main():
 
     st.markdown("<p>Faça os uploads abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="lu_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
 
-    vector_B_input = st.file_uploader("Vetor B", type="txt")
+    vector_B_input = st.file_uploader("Vetor B", type="txt", key="lu_B")
     if vector_B_input:
       vector_B = read_matrix(vector_B_input)
       st.latex(convert_matrix_to_latex(vector_B, "Vetor B"))
@@ -74,12 +74,12 @@ def main():
 
     st.markdown("<p>Faça os uploads abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="cholesky_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
 
-    vector_B_input = st.file_uploader("Vetor B", type="txt")
+    vector_B_input = st.file_uploader("Vetor B", type="txt", key="cholesky_B")
     if vector_B_input:
       vector_B = read_matrix(vector_B_input)
       st.latex(convert_matrix_to_latex(vector_B, "Vetor B"))
@@ -120,12 +120,12 @@ def main():
 
     st.markdown("<p>Faça os uploads abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="jacobi_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
 
-    vector_B_input = st.file_uploader("Vetor B", type="txt")
+    vector_B_input = st.file_uploader("Vetor B", type="txt", key="jacobi_B")
     if vector_B_input:
       vector_B = read_matrix(vector_B_input)
       st.latex(convert_matrix_to_latex(vector_B, "Vetor B"))
@@ -169,12 +169,12 @@ def main():
 
     st.markdown("<p>Faça os uploads abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="gauss_seidel_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
 
-    vector_B_input = st.file_uploader("Vetor B", type="txt")
+    vector_B_input = st.file_uploader("Vetor B", type="txt", key="gauss_seidel_B")
     if vector_B_input:
       vector_B = read_matrix(vector_B_input)
       st.latex(convert_matrix_to_latex(vector_B, "Vetor B"))
@@ -215,7 +215,7 @@ def main():
 
     st.markdown("<p>Faça o upload abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="potencia_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
@@ -258,7 +258,7 @@ def main():
 
     st.markdown("<p>Faça o upload abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="jacobi_eigen_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
@@ -295,7 +295,7 @@ def main():
 
     st.markdown("<p>Faça o upload abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_xy_input = st.file_uploader("Pares x e y", type="txt")
+    matrix_xy_input = st.file_uploader("Pares x e y", type="txt", key="interpolacao_xy")
     if matrix_xy_input:
       matrix_xy = read_matrix(matrix_xy_input)
       try:
@@ -337,7 +337,7 @@ def main():
 
     st.markdown("<p>Faça o upload abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_xy_input = st.file_uploader("Pares x e y", type="txt")
+    matrix_xy_input = st.file_uploader("Pares x e y", type="txt", key="regressao_xy")
     if matrix_xy_input:
       matrix_xy = read_matrix(matrix_xy_input)
       try:
@@ -351,7 +351,7 @@ def main():
         st.error("Arquivo fornecido não corresponde com as especificações mencionadas acima.")
     
     st.text("Insira o grau da regressão (padrão = 1):")
-    grau_input = st.text_input("Insira aqui o grau", value="1")
+    grau_input = st.text_input("Insira aqui o grau", value="1", key="regressao_grau")
 
     st.text("Insira o valor de x para calcular a interpolação:")
     x_input = st.text_input("Insira aqui um valor de x")
@@ -380,7 +380,7 @@ def main():
 
     st.markdown("<p>Faça o upload abaixo:</p>", unsafe_allow_html=True)
 
-    matrix_A_input = st.file_uploader("Matriz A", type="txt")
+    matrix_A_input = st.file_uploader("Matriz A", type="txt", key="determinante_A")
     if matrix_A_input:
       matrix_A = read_matrix(matrix_A_input)
       st.latex(convert_matrix_to_latex(matrix_A, "Matriz A"))
