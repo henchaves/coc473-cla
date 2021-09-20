@@ -13,7 +13,9 @@ def main():
   menu = ["1.1 - Método de Newton",
           "1.2 - Método de Broyden",
           "2.1.1 - Método da Bisseção",
-          "2.1.2 - Método de Newton"]
+          "2.1.2 - Método de Newton",
+          "2.2.1 - Quadratura de Gauss",
+          "2.2.2 - Quadratura Polinomial"]
   choice = st.sidebar.selectbox("Implementações", menu)
 
   ################# NEWTON NL ######################
@@ -138,7 +140,7 @@ def main():
     max_iter = st.text_input("Insira o número máximo de iterações", value=100, key="max_iter")
     max_tol = st.text_input("Insira o valor de tolerância máxima", value=1e-5, key="max_tol")
 
-    if (a_input and b_input and max_tol):
+    if (a_input and b_input and max_tol and max_iter):
       try:
         c1_input = float(c1_input)
         c2_input = float(c2_input)
@@ -147,6 +149,7 @@ def main():
         a_input = float(a_input)
         b_input = float(b_input)
         max_tol = float(max_tol)
+        max_iter = int(max_iter)
         button = st.button("Calcular")
 
         if button:
@@ -161,7 +164,137 @@ def main():
         st.error("Não convergiu!")
       
 ##########################################
+######################################## METODO De  Newton ################################
+  if choice == "2.1.2 - Método de Newton":
+    st.subheader("Implementação 2.1.2 - Método de Newton - Encontrar uma raiz a partir de um x0")
+    from algorithms.newton_root import run_newton_root
 
+    st.text("Função f(x) dada por:")
+    st.latex(r'''
+      c_{1}\exp(c_{2}x) + c_{3}x^{c_{4}}
+    ''')
+    st.text("\n\n")
+    st.text("Insira os valores das costantes.")
+    c1_input = st.text_input("Insira o valor de c1", value=1, key="c1_value")
+    c2_input = st.text_input("Insira o valor de c2", value=1, key="c2_value")
+    c3_input = st.text_input("Insira o valor de c3", value=1, key="c3_value")
+    c4_input = st.text_input("Insira o valor de c4", value=0, key="c4_value")
+
+    x_0_input = st.text_input("Insira o valor de x0", value=1, key="x_0_value")
+    max_iter = st.text_input("Insira o número máximo de iterações", value=100, key="max_iter")
+    max_tol = st.text_input("Insira o valor de tolerância máxima", value=5e-4, key="max_tol")
+
+    if (x_0_input and max_tol and max_iter):
+      try:
+        c1_input = float(c1_input)
+        c2_input = float(c2_input)
+        c3_input = float(c3_input)
+        c4_input = float(c4_input)
+        max_iter = int(max_iter)
+        x_0_input = float(x_0_input)
+        max_tol = float(max_tol)
+        button = st.button("Calcular")
+
+        if button:
+          constants = [c1_input, c2_input, c3_input, c4_input]
+          x_root = run_newton_root(constants, x_0_input, max_tol, max_iter)
+          st.latex(f"Raiz = {x_root}")
+
+      except TypeError as e:
+        st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
+      
+      except Exception as e:
+        st.error("Não convergiu!")
+      
+#############################QUADRATURA DE GAUSS############
+  if choice == "2.2.1 - Quadratura de Gauss":
+    st.subheader("Implementação 2.2.1 - Quadratura de Gauss - Calcula o valor da integral em um intervalo definido")
+    from algorithms.gauss_quadrature import run_gauss_quadrature
+
+    st.text("Função f(x) dada por:")
+    st.latex(r'''
+      c_{1}\exp(c_{2}x) + c_{3}x^{c_{4}}
+    ''')
+    st.text("\n\n")
+    st.text("Insira os valores das costantes.")
+    c1_input = st.text_input("Insira o valor de c1", value=1, key="c1_value")
+    c2_input = st.text_input("Insira o valor de c2", value=1, key="c2_value")
+    c3_input = st.text_input("Insira o valor de c3", value=1, key="c3_value")
+    c4_input = st.text_input("Insira o valor de c4", value=0, key="c4_value")
+
+    st.text("Insira os valores de a e b para definir o intervalo.")
+    a_input = st.text_input("Insira o valor de a", value=0, key="a_interval")
+    b_input = st.text_input("Insira o valor para b", value=1, key="b_interval")
+    n_points = st.text_input("Insira o número de pontos (entre 2 e 10)", value=5, key="n_points_value")
+
+
+    if (a_input and b_input and n_points):
+      try:
+        c1_input = float(c1_input)
+        c2_input = float(c2_input)
+        c3_input = float(c3_input)
+        c4_input = float(c4_input)
+        a_input = float(a_input)
+        b_input = float(b_input)
+        n_points = int(n_points)
+        button = st.button("Calcular")
+
+        if button:
+          constants = [c1_input, c2_input, c3_input, c4_input]
+          area = run_gauss_quadrature(constants, a_input, b_input, n_points)
+          st.latex(f"Area = {area}")
+
+      except TypeError as e:
+        st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
+      
+      except Exception as e:
+        st.error("Não convergiu!")
+############################ QUADRATURA POLINOMIAL ###########
+  if choice == "2.2.2 - Quadratura Polinomial":
+    st.subheader("Implementação 2.2.2 - Quadratura Polinomial - Calcula o valor da integral em um intervalo definido")
+    from algorithms.polinomial_quadrature import run_polinomial_quadrature
+
+    st.text("Função f(x) dada por:")
+    st.latex(r'''
+      c_{1}\exp(c_{2}x) + c_{3}x^{c_{4}}
+    ''')
+    st.text("\n\n")
+    st.text("Insira os valores das costantes.")
+    c1_input = st.text_input("Insira o valor de c1", value=1, key="c1_value")
+    c2_input = st.text_input("Insira o valor de c2", value=1, key="c2_value")
+    c3_input = st.text_input("Insira o valor de c3", value=1, key="c3_value")
+    c4_input = st.text_input("Insira o valor de c4", value=0, key="c4_value")
+
+    st.text("Insira os valores de a e b para definir o intervalo.")
+    a_input = st.text_input("Insira o valor de a", value=0, key="a_interval")
+    b_input = st.text_input("Insira o valor para b", value=1, key="b_interval")
+    n_points = st.text_input("Insira o número de pontos (entre 2 e 10)", value=5, key="n_points_value")
+
+
+    if (a_input and b_input and n_points):
+      try:
+        c1_input = float(c1_input)
+        c2_input = float(c2_input)
+        c3_input = float(c3_input)
+        c4_input = float(c4_input)
+        a_input = float(a_input)
+        b_input = float(b_input)
+        n_points = int(n_points)
+        button = st.button("Calcular")
+
+        if button:
+          constants = [c1_input, c2_input, c3_input, c4_input]
+          area = run_polinomial_quadrature(constants, a_input, b_input, n_points)
+          st.latex(f"Area = {area}")
+
+      except TypeError as e:
+        st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
+      
+      except Exception as e:
+        st.error("Não convergiu!")
+
+
+#################
 ########################################################
   st.text("")
   st.text("")
