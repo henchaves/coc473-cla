@@ -1,12 +1,6 @@
 import streamlit as st
 import numpy as np
-
-from utils import (download_txt, 
-                   convert_matrix_to_latex, 
-                   read_matrix, 
-                   save_file_as_txt)
-
-# from algorithms.general import (verificar_matriz_quadrada, verifica_tamanho_vetor)
+import pandas as pd
 
 def main():
   st.title("COC473 - Segundo trabalho prático")
@@ -19,7 +13,8 @@ def main():
           "2.3.1 - Derivada Central",
           "2.3.2 - Derivada Passo a frente",
           "2.3.3 - Derivada Passo atrás",
-          "2.4 - Derivada Extrapolação de Richard"]
+          "2.4 - Derivada Extrapolação de Richard",
+          "3 - Rugen-Kutta-Nystrom"]
 
   choice = st.sidebar.selectbox("Implementações", menu)
 
@@ -462,6 +457,74 @@ def main():
         st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
       
       except Exception as e:
+        st.error(e)
+        st.error("Um erro aconteceu!")
+############################### RUGEN KUTTA NYSTROM
+
+  if choice == "3 - Rugen-Kutta-Nystrom":
+    st.subheader("Implementação 3 - Rugen-Kutta-Nystrom - Cálculo de EDO de segunda ordem")
+    from algorithms.rugen_kutta_nystrom import run_runge_kutta_nystrom
+
+    st.text("EDO y''(t) dada por:")
+    st.latex(r'''
+      \frac{a_{1}\sin(w_{1}t) + a_{2}\sin(w_{2}t) + a_{3}\sin(w_{3}t) - cy' + ky}{m}
+    ''')
+    st.text("\n\n")
+    st.text("Insira os valores das costantes.")
+    a1_input = st.text_input("Insira o valor de a1", value=1, key="a1_value")
+    a2_input = st.text_input("Insira o valor de a2", value=2, key="a2_value")
+    a3_input = st.text_input("Insira o valor de a3", value=1.5, key="a3_value")
+    w1_input = st.text_input("Insira o valor de w1", value=0.05, key="w1_value")
+    w2_input = st.text_input("Insira o valor de w2", value=1, key="w2_value")
+    w3_input = st.text_input("Insira o valor de w3", value=2, key="w3_value")
+    m_input = st.text_input("Insira o valor de m", value=1, key="m_value")
+    c_input = st.text_input("Insira o valor de c", value=0.1, key="c_value")
+    k_input = st.text_input("Insira o valor de k", value=2, key="k_value")
+    delta = st.text_input("Insira o valor do passo", value=0.05, key="delta_value")
+    t_maximum = st.text_input("Insira o valor máximo de t", value=1, key="t_maximum_value")
+
+    if (a1_input and a2_input and a3_input and w1_input and w2_input and w3_input and m_input and c_input and k_input and delta and t_maximum):
+      try:
+        a1_input = float(a1_input)
+        a2_input = float(a2_input)
+        a3_input = float(a3_input)
+        w1_input = float(w1_input)
+        w2_input = float(w2_input)
+        w3_input = float(w3_input)
+        m_input = float(m_input)
+        c_input = float(c_input)
+        k_input = float(k_input)
+        delta = float(delta)
+        t_maximum = float(t_maximum)
+        button = st.button("Calcular")
+
+        if button:
+          c_dict = {
+            "a1": a1_input,
+            "a2": a2_input,
+            "a3": a3_input,
+            "w1": w1_input,
+            "w2": w2_input,
+            "w3": w3_input,
+            "m": m_input,
+            "c": c_input,
+            "k": k_input
+          }
+
+          df = run_runge_kutta_nystrom(delta, t_maximum, c_dict).astype(float)
+          st.write(df)
+          csv = df.to_csv().encode("utf-8")
+          st.download_button("Download da tabela", csv, "runge_kutta_nystrom.csv", mime="text/csv")
+
+          # st.text(df)
+          # st.table(df)
+          # st.latex(f"Derivada = {deriv_result}")
+
+      except TypeError as e:
+        st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
+      
+      except Exception as e:
+        print(e)
         st.error(e)
         st.error("Um erro aconteceu!")
 ##################################################################
