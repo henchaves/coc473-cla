@@ -125,7 +125,7 @@ def main():
 
 ######################################## METODO DA BISSEÇÃO ################################
   if choice == "2.1.1 - Método da Bisseção":
-    st.subheader("Implementação 2.1.1 - Método da Bissação - Encontrar uma raiz no intervalo")
+    st.subheader("Implementação 2.1.1 - Método da Bisseção - Encontrar uma raiz no intervalo")
     from algorithms.bissection_root import run_bisseccao
 
     st.text("Função f(x) dada por:")
