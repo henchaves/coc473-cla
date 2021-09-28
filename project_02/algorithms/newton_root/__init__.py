@@ -18,9 +18,8 @@ def run_newton_root(constants, x_0, max_tol, max_iter):
     x_k = x_old - float(f.subs({"x": x_old} | c_dict))/float(f_deriv.subs({"x": x_old} | c_dict))
     tolk = np.abs(x_k - x_old)
     x_old = x_k
-    print(x_k)
-    print(k)
+
     if tolk < max_tol:
-        return x_k
+        return x_k, k
     if k == max_iter:
         raise Exception("Não convergiu!")

@@ -45,7 +45,7 @@ def calculate_nl_newton(max_iter, max_tol, X0, theta_dict, F, J):
         X_list.append(X_k.copy())    
         tolk = np.linalg.norm(delta_X)/np.linalg.norm(X_k)
         if tolk < max_tol:
-            return X_k
+            return X_k, k
 
         if k == max_iter:
             raise Exception("Não convergiu")
@@ -71,5 +71,5 @@ def run_newton(max_iter, max_tol, X0, theta_dict):
     F = create_F(number_of_functions, fns)
     J = create_J(number_of_functions, number_of_constants, fns)
 
-    X = calculate_nl_newton(max_iter, max_tol, X0, theta_dict, F, J)
-    return np.round(X.ravel(), 3).tolist()
+    X, k = calculate_nl_newton(max_iter, max_tol, X0, theta_dict, F, J)
+    return np.round(X.ravel(), 3).tolist(), k

@@ -54,8 +54,10 @@ def run_polinomial_quadrature(constants, a, b, N):
   polinomial_weights = get_polinomial_weights()
 
   area = 0
+
+  L = b - a
   for i in range(1, N+1):
-    w_i = polinomial_weights[N][i]
+    w_i = polinomial_weights[N][i]*L
     x_i = polinomial_x[N][i]
     f_i = float(f.subs({"x": x_i} | c_dict))
     area += f_i*w_i

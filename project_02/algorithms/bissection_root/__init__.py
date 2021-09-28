@@ -20,5 +20,6 @@ def run_bisseccao(constants, a, b, max_tol, max_iter):
         a = x_i
     if count == max_iter:
       raise Exception("Não convergiu!")
+    count += 1
 
-  return x_i
+  return x_i, count

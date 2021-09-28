@@ -48,7 +48,7 @@ def calculate_nl_broyden(max_iter, max_tol, theta_dict, X0, F, J):
         Y_k = sub_F(F, {"c2": X_arr[k][0][0], "c3": X_arr[k][1][0], "c4": X_arr[k][2][0]} | theta_dict) - sub_F(F, {"c2": X_arr[k-1][0][0], "c3": X_arr[k-1][1][0], "c4": X_arr[k-1][2][0]} | theta_dict)
         tolk = np.linalg.norm(delta_X)/np.linalg.norm(X_arr[k])
         if tolk < max_tol:
-            return X_arr[k]
+            return X_arr[k], k
         else:
             B_arr[k] = B_arr[k-1] + ((Y_k - (B_arr[k-1] @ delta_X)) @ (delta_X.T))/((delta_X.T) @ delta_X)
 
@@ -71,5 +71,5 @@ def run_broyden(max_iter, max_tol, X0, theta_dict):
     F = create_F(number_of_functions, fns)
     J = create_J(number_of_functions, number_of_constants, fns)
 
-    X = calculate_nl_broyden(max_iter, max_tol, theta_dict, X0, F, J)
-    return np.round(X.ravel(), 3).tolist()
+    X, k = calculate_nl_broyden(max_iter, max_tol, theta_dict, X0, F, J)
+    return np.round(X.ravel(), 3).tolist(), k
