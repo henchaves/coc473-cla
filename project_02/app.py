@@ -54,10 +54,11 @@ def main():
         if button:
           X0 = np.array([[1], [0], [4]])
           theta_dict = {"θ1": θ1_input, "θ2": θ2_input}
-          c2, c3, c4 = run_newton(max_iter, max_tol, X0, theta_dict)
+          (c2, c3, c4), k = run_newton(max_iter, max_tol, X0, theta_dict)
           st.latex(f"c2 = {c2}")
           st.latex(f"c3 = {c3}")
           st.latex(f"c4 = {c4}")
+          st.text(f"Número de iterações necessárias: {k}")
 
 
 
@@ -105,10 +106,12 @@ def main():
         if button:
           X0 = np.array([[1], [0], [-0.2]])
           theta_dict = {"θ1": θ1_input, "θ2": θ2_input}
-          c2, c3, c4 = run_broyden(max_iter, max_tol, X0, theta_dict)
+          (c2, c3, c4), k = run_broyden(max_iter, max_tol, X0, theta_dict)
           st.latex(f"c2 = {c2}")
           st.latex(f"c3 = {c3}")
           st.latex(f"c4 = {c4}")
+          st.text(f"Número de iterações necessárias: {k}")
+
 
       except TypeError as e:
         st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
@@ -154,8 +157,9 @@ def main():
 
         if button:
           constants = [c1_input, c2_input, c3_input, c4_input]
-          x_root = run_bisseccao(constants, a_input, b_input, max_tol, max_iter)
+          x_root, k = run_bisseccao(constants, a_input, b_input, max_tol, max_iter)
           st.latex(f"Raiz = {x_root}")
+          st.text(f"Número de iterações necessárias: {k}")
 
       except TypeError as e:
         st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
@@ -197,8 +201,10 @@ def main():
 
         if button:
           constants = [c1_input, c2_input, c3_input, c4_input]
-          x_root = run_newton_root(constants, x_0_input, max_tol, max_iter)
+          x_root, k = run_newton_root(constants, x_0_input, max_tol, max_iter)
           st.latex(f"Raiz = {x_root}")
+          st.text(f"Número de iterações necessárias: {k}")
+
 
       except TypeError as e:
         st.error("Não foi possível calcular. Verifique os valores de entrada e tente novamente.")
@@ -467,21 +473,21 @@ def main():
 
     st.text("EDO y''(t) dada por:")
     st.latex(r'''
-      \frac{a_{1}\sin(w_{1}t) + a_{2}\sin(w_{2}t) + a_{3}\sin(w_{3}t) - cy' + ky}{m}
+      \frac{a_{1}\sin(w_{1}t) + a_{2}\sin(w_{2}t) + a_{3}\sin(w_{3}t) - cy' - ky}{m}
     ''')
     st.text("\n\n")
     st.text("Insira os valores das costantes.")
-    a1_input = st.text_input("Insira o valor de a1", value=1, key="a1_value")
-    a2_input = st.text_input("Insira o valor de a2", value=2, key="a2_value")
-    a3_input = st.text_input("Insira o valor de a3", value=1.5, key="a3_value")
+    a1_input = st.text_input("Insira o valor de a1", value=2, key="a1_value")
+    a2_input = st.text_input("Insira o valor de a2", value=2.1, key="a2_value")
+    a3_input = st.text_input("Insira o valor de a3", value=1.35, key="a3_value")
     w1_input = st.text_input("Insira o valor de w1", value=0.05, key="w1_value")
     w2_input = st.text_input("Insira o valor de w2", value=1, key="w2_value")
-    w3_input = st.text_input("Insira o valor de w3", value=2, key="w3_value")
+    w3_input = st.text_input("Insira o valor de w3", value=2.1, key="w3_value")
     m_input = st.text_input("Insira o valor de m", value=1, key="m_value")
     c_input = st.text_input("Insira o valor de c", value=0.1, key="c_value")
-    k_input = st.text_input("Insira o valor de k", value=2, key="k_value")
-    delta = st.text_input("Insira o valor do passo", value=0.05, key="delta_value")
-    t_maximum = st.text_input("Insira o valor máximo de t", value=1, key="t_maximum_value")
+    k_input = st.text_input("Insira o valor de k", value=3, key="k_value")
+    delta = st.text_input("Insira o valor do passo", value=0.5, key="delta_value")
+    t_maximum = st.text_input("Insira o valor máximo de t", value=360, key="t_maximum_value")
 
     if (a1_input and a2_input and a3_input and w1_input and w2_input and w3_input and m_input and c_input and k_input and delta and t_maximum):
       try:
